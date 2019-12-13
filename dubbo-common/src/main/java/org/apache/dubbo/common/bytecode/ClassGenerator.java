@@ -29,6 +29,7 @@ import javassist.NotFoundException;
 import org.apache.dubbo.common.utils.ClassHelper;
 import org.apache.dubbo.common.utils.ReflectUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -295,6 +296,11 @@ public final class ClassGenerator {
                         mCtc.addConstructor(CtNewConstructor.make(code.replaceFirst(SIMPLE_NAME_TAG, sn[sn.length - 1]), mCtc));
                     }
                 }
+            }
+            try {
+                mCtc.writeFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             return mCtc.toClass(loader, pd);
         } catch (RuntimeException e) {
